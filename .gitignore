@@ -19,3 +19,7 @@ env/
 # 开发期自检脚本（本地保留，不进仓库）
 _selftest.py
 _simtest.py
+
+# 开发文档
+.astrbot开发文档/
+astrbot开发文档/

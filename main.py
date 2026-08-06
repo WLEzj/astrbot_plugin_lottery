@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""AstrBot 转盘抽奖插件。
-
-用法：``/lucky 昵称1 昵称2 ...``（别名：``/抽奖``、``/转盘``）
-机器人会生成一个等距放置所有昵称的旋转转盘 GIF，减速停止后定格在获奖者
-扇区并公布获奖者。昵称之间用空格或中英文逗号/顿号分隔，最多 20 人。
-"""
 from __future__ import annotations
 
 import asyncio
@@ -34,13 +27,6 @@ def _cleanup_gif(path: str | None) -> None:
     except OSError as exc:
         logger.warning(f"[转盘抽奖] 清理 GIF 失败: {exc}")
 
-
-@register(
-    "astrbot_plugin_lottery",
-    "曹扬",
-    "群聊转盘抽奖：一条指令输入任意数量昵称，转盘旋转停止后公布获奖者",
-    "1.0.0",
-)
 class LotteryPlugin(Star):
     def __init__(self, context: Context):
         super().__init__(context)

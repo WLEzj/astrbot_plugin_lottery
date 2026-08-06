@@ -23,6 +23,18 @@ from . import wheel
 _ALIAS = set(wheel.COMMANDS) - {"lucky"}
 
 
+def _cleanup_gif(path: str | None) -> None:
+    """删除已生成的临时 GIF，避免 temp 目录持续累积。"""
+    if not path:
+        return
+    try:
+        os.remove(path)
+    except FileNotFoundError:
+        return
+    except OSError as exc:
+        logger.warning(f"[转盘抽奖] 清理 GIF 失败: {exc}")
+
+
 @register(
     "astrbot_plugin_lottery",
     "曹扬",
@@ -71,14 +83,19 @@ class LotteryPlugin(Star):
                 ),
             )
         except Exception as e:
-            logger.error(f"[转盘抽奖] 渲染失败: {e}", exc_info=True)
-            yield event.plain_result(f"​转盘渲染失败，请稍后重试。\n{type(e).__name__}: {e}")
+            err_id = uuid.uuid4().hex[:8]
+            logger.error(f"[转盘抽奖] 渲染失败 (id={err_id}): {e}", exc_info=True)
+            _cleanup_gif(gif_path)
+            yield event.plain_result(f"​转盘渲染失败，请稍后重试。错误 ID：{err_id}")
             return
 
-        # 先发转盘动画 GIF，再公布获奖者
-        yield event.image_result(gif_path)
-        yield event.plain_result(
-            "​🎉 抽奖结果 🎉\n"
-            f"🏆 获奖者：{winner}\n"
-            f"参赛者：{'、'.join(names)}"
-        )
+        try:
+            # 先发转盘动画 GIF，再公布获奖者
+            yield event.image_result(gif_path)
+            yield event.plain_result(
+                "​🎉 抽奖结果 🎉\n"
+                f"🏆 获奖者：{winner}\n"
+                f"参赛者：{'、'.join(names)}"
+            )
+        finally:
+            _cleanup_gif(gif_path)

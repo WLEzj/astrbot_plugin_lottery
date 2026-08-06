@@ -1,0 +1,21 @@
+# Python 缓存与构建产物
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# 本地开发环境 / IDE
+.claude/
+.idea/
+.vscode/
+*.log
+
+# 开发期自检脚本（本地保留，不进仓库）
+_selftest.py
+_simtest.py

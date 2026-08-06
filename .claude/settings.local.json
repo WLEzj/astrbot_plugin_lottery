@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Read(//d/game/Robot/astrbot开发文档/开发文档/**)",
+      "Read(//d/game/Robot/AstrBotLauncher-0.2.0/AstrBotLauncher-0.2.0/AstrBot/data/plugins/astrbot_plugin_poetry_games/**)",
+      "Read(//d/game/Robot/AstrBotLauncher-0.2.0/AstrBotLauncher-0.2.0/AstrBot/data/plugins/astrbot_plugin_festival_greeter/**)"
+    ]
+  }
+}

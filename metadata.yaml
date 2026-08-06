@@ -1,0 +1,6 @@
+name: astrbot_plugin_lottery # 插件唯一识别名，以 astrbot_plugin_ 前缀开头
+display_name: 转盘抽奖 # 用于展示的名字
+desc: 一条指令输入任意数量的昵称，机器人运行转盘抽奖动画，旋转停止后定格并公布获奖者。 # 插件简短描述
+version: 1.0.0 # 插件版本号
+author: 曹扬 # 作者
+repo: https://github.com/yourname/astrbot_plugin_lottery # 插件的仓库地址

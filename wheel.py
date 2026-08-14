@@ -10,6 +10,7 @@
 """
 from __future__ import annotations
 
+import logging
 import math
 import os
 import random
@@ -17,6 +18,8 @@ import re
 from typing import List, Optional, Sequence
 
 from PIL import Image, ImageDraw, ImageFont
+
+_logger = logging.getLogger("astrbot_plugin_lottery.wheel")
 
 # ---------------------------------------------------------------- 常量
 
@@ -48,8 +51,14 @@ GOLD = (255, 193, 7)
 INK = (40, 40, 40)
 BG = (250, 248, 244)
 
-# 常见中文字体路径（Windows / macOS / Linux）
+# 打包字体：与 wheel.py 同目录的 fonts/ 下，优先使用，保证任意环境渲染一致
+_BUNDLED_FONT = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "fonts", "NotoSansSC-Regular.ttf"
+)
+
+# 常见中文字体路径（Windows / macOS / Linux），仅作打包字体缺失时的回退
 FONT_CANDIDATES = [
+    _BUNDLED_FONT,                      # 打包的 Noto Sans SC（OFL 协议）
     "C:/Windows/Fonts/msyhbd.ttc",   # 微软雅黑 Bold
     "C:/Windows/Fonts/msyh.ttc",     # 微软雅黑
     "C:/Windows/Fonts/simhei.ttf",   # 黑体
@@ -88,12 +97,16 @@ def parse_names(message_str: str, commands: Sequence[str] = COMMANDS) -> List[st
 # ---------------------------------------------------------------- 字体
 
 def _make_font(size: int) -> ImageFont.ImageFont:
-    """优先使用系统中文字体，找不到时回退到 PIL 内置字体。"""
+    """优先使用打包字体；失败时回退系统字体，最后回退 PIL 内置字体。
+
+    回退到内置字体时打 warning（该字体不含中文字形，中文会渲染成方框）。
+    """
     if _FONT_PATH:
         try:
             return ImageFont.truetype(_FONT_PATH, size)
-        except Exception:
-            pass
+        except Exception as exc:
+            _logger.warning("加载字体失败 %r: %s", _FONT_PATH, exc)
+    _logger.warning("未找到可用中文字体，回退到 PIL 内置字体，中文将渲染为方框")
     return ImageFont.load_default()
 
 

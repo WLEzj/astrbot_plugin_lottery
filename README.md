@@ -20,16 +20,6 @@ AstrBot 群聊转盘抽奖插件。
 - 实际开奖最少建议：2 人（插件层限制）
 - 依赖：Pillow（见 `requirements.txt`）
 
-## 安装
-
-将本目录作为 AstrBot 插件放入插件目录后，安装依赖：
-
-```bash
-pip install -r requirements.txt
-```
-
-如果 AstrBot 运行环境已内置 Pillow，也建议保留显式依赖声明，便于独立测试与打包。
-
 ## 使用方法
 
 ### 基本命令
@@ -112,7 +102,3 @@ py -3.13 wheel.py 小明 小红 小刚 小丽
 ### 3) 为什么限制最多 20 人
 
 人数过多会导致扇区过窄、昵称严重重叠，影响可读性与出图质量。
-
-## License
-
-MIT（见 `LICENSE`）
